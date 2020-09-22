@@ -28,7 +28,7 @@ def data_prep(df):
         df['fe2__a_gt_b_{}'.format(col)] = (df[col_a]>df[col_b]).astype(int)
 
     # mark original columns as fe0
-    cols = extract_column_names(df, '^[(a_)(b_)]')
+    cols = extract_column_names(df, '^(a_|b_)')
     df.rename(columns=dict(zip(cols, ['fe0__' + col for col in cols])), inplace=True)
 
     return df
