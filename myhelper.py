@@ -1,8 +1,11 @@
 import numpy as np
+from sklearn.base import BaseEstimator, TransformerMixin
+
 
 def extract_column_names(df, regex):
     cols = df.filter(regex=regex, axis=1).columns.tolist()
     return cols
+
 
 def data_prep(df):
 
@@ -33,6 +36,7 @@ def data_prep(df):
 
     return df
 
+
 def sampling(X, y, sample_size, seed):
     # randomly selct N indices without replacement
     idx = np.random.choice(range(0, len(X)), sample_size, False)
@@ -40,3 +44,25 @@ def sampling(X, y, sample_size, seed):
     y_ = y[idx]
 
     return X_, y_
+
+
+class ColumnSelector(BaseEstimator, TransformerMixin):
+
+    def __init__(self, regex):
+        self.regex = regex
+
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, X):
+        return X.loc[:, extract_column_names(X, self.regex)]
+
+
+
+
+
+
+
+
+
+
